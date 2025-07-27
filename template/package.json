@@ -1,0 +1,24 @@
+{
+  "name": "openprocessing-webgpu-ts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p config/tsconfig.json && node config/build.js && cp public/index.html dist/",
+    "dev": "npm run build && concurrently \"npm run dev:watch\" \"npm run dev:serve\" \"npm run dev:open\"",
+    "dev:watch": "concurrently \"tsc -p config/tsconfig.json --watch\" \"nodemon --watch dist --ext js --ignore dist/sketch.js --exec 'node config/build.js && cp public/index.html dist/'\"",
+    "dev:serve": "cd dist && python3 -m http.server 8080",
+    "dev:open": "sleep 2 && open http://localhost:8080",
+    "watch": "tsc -p config/tsconfig.json --watch",
+    "serve": "cd dist && python3 -m http.server 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@webgpu/types": "^0.1.64",
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  }
+}
