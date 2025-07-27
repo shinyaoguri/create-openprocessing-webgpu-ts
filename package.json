@@ -2,6 +2,9 @@
   "name": "create-openprocessing-webgpu-ts",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "create-openprocessing-webgpu-ts": "./index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
