@@ -9,7 +9,6 @@ OpenProcessing風のWebGPU + TypeScriptプロジェクトを生成するCLIツ�
 - **OpenProcessing対応**: OpenProcessing.orgでの実行に最適化
 - **モジュラー設計**: 拡張しやすいアーキテクチャ
 - **開発環境**: ホットリロード対応の開発サーバー
-- **統計表示**: stats.jsによるパフォーマンス監視
 
 ## 📦 インストール
 
@@ -52,44 +51,6 @@ npm run build
 ```
 本番用ファイルを`dist/`フォルダに生成します。
 sketch.jsをOpenprocessing.orgにコピー&ペーストすることができます
-
-
-## 🏗️ プロジェクト構造
-
-```
-my-webgpu-project/
-├── src/
-│   ├── sketch.ts              # メインエントリーポイント
-│   ├── core/                  # コアシステム
-│   │   ├── webgpu/           # WebGPU関連
-│   │   │   ├── device.ts     # デバイス初期化
-│   │   │   ├── pipeline.ts   # レンダリングパイプライン
-│   │   │   └── renderer.ts   # レンダラー
-│   │   └── utils/            # ユーティリティ
-│   │       ├── canvas.ts     # キャンバス管理
-│   │       └── stats.ts      # パフォーマンス統計
-│   ├── graphics/             # グラフィック関連
-│   │   ├── geometry/         # ジオメトリ
-│   │   │   ├── index.ts
-│   │   │   └── triangle.ts   # 三角形ジオメトリ
-│   │   ├── materials/        # マテリアル（拡張用）
-│   │   └── shaders/          # シェーダー
-│   │       ├── basic.wgsl    # 基本シェーダー
-│   │       └── index.ts
-│   ├── scenes/               # シーン管理
-│   │   ├── scene.ts          # ベースシーンクラス
-│   │   └── basic-scene.ts    # 基本シーンの実装
-│   └── types/                # TypeScript型定義
-│       ├── index.d.ts
-│       ├── stats.d.ts
-│       └── webgpu.d.ts
-├── public/
-│   └── index.html
-├── config/
-│   ├── build.js              # ビルド設定
-│   └── tsconfig.json         # TypeScript設定
-└── package.json
-```
 
 ## 🎨 基本的な使い方
 
@@ -144,26 +105,6 @@ fn fs_main(@builtin(position) fragCoord: vec4<f32>) -> @location(0) vec4<f32> {
 - **Safari**: Technology Preview
 
 WebGPU対応状況は[caniuse.com](https://caniuse.com/webgpu)で確認できます。
-
-## 🔧 開発のヒント
-
-### パフォーマンス最適化
-- stats.jsでフレームレートを監視
-- 大きなジオメトリはインスタンス化を検討
-- シェーダーの複雑度に注意
-
-### OpenProcessing.org向け最適化
-- クリーンアップ機能が自動で実行されます
-- 再実行時のメモリリークを防止
-- グローバル変数の使用は避けてください
-
-### デバッグ
-```typescript
-// WebGPUエラーログの有効化
-const device = await adapter.requestDevice({
-    // デバッグ情報を有効化
-});
-```
 
 ## 📚 参考資料
 
