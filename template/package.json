@@ -4,12 +4,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p config/tsconfig.json && node config/build.js && cp public/index.html dist/",
-    "dev": "npm run build && concurrently \"npm run dev:watch\" \"npm run dev:serve\" \"npm run dev:open\"",
+    "dev": "node config/dev-server.js",
     "dev:watch": "concurrently \"tsc -p config/tsconfig.json --watch\" \"nodemon --watch dist --ext js --ignore dist/sketch.js --exec 'node config/build.js && cp public/index.html dist/'\"",
-    "dev:serve": "cd dist && python3 -m http.server 8080",
-    "dev:open": "sleep 2 && open http://localhost:8080",
     "watch": "tsc -p config/tsconfig.json --watch",
-    "serve": "cd dist && python3 -m http.server 8080",
+    "serve": "node config/serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
