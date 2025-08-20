@@ -1,6 +1,5 @@
 import { initWebGPU } from './core/webgpu/device';
 import { setupCanvas, resizeCanvas } from './core/utils/canvas';
-import { preloadStats } from './core/utils/stats';
 import { BasicScene } from './scenes/basic-scene';
 
 // openprocessing.org対応：再実行時のクリーンアップ
@@ -37,22 +36,31 @@ function waitForDOM(): Promise<void> {
     });
 }
 
-async function main(stats: Stats) {
+async function main() {
     try {
+        console.log('[WebGPU] Starting main function...');
+        
         if (!navigator.gpu) {
             console.warn("WebGPU is not supported in this browser.");
             return;
         }
+        console.log('[WebGPU] WebGPU API is available');
 
         // DOM準備完了を待つ
         await waitForDOM();
+        console.log('[WebGPU] DOM is ready');
 
         const canvas = setupCanvas();
+        console.log('[WebGPU] Canvas created');
+        
         const { device, context, format } = await initWebGPU(canvas);
+        console.log('[WebGPU] Device initialized, format:', format);
         
         // シーンを初期化
         const scene = new BasicScene();
+        console.log('[WebGPU] Creating BasicScene...');
         await scene.initialize(device, format);
+        console.log('[WebGPU] Scene initialized');
 
         function handleResize() {
             resizeCanvas(canvas, device, context, format);
@@ -62,9 +70,13 @@ async function main(stats: Stats) {
         handleResize(); // 初回も実行
 
         // レンダリングループ
+        let frameCount = 0;
         function renderLoop(timeMs: number) {
             try {
-                stats.begin();
+                frameCount++;
+                if (frameCount === 1) {
+                    console.log('[WebGPU] First frame rendering...');
+                }
                 
                 const time = timeMs * 0.001;
                 const width = canvas.width;
@@ -76,12 +88,16 @@ async function main(stats: Stats) {
                 // シーンをレンダリング
                 scene.render(device, context);
                 
-                stats.end();
+                if (frameCount === 1) {
+                    console.log('[WebGPU] First frame rendered successfully');
+                }
+
                 requestAnimationFrame(renderLoop);
             } catch (error) {
                 console.error('Render loop error:', error);
             }
         }
+        console.log('[WebGPU] Starting render loop...');
         requestAnimationFrame(renderLoop);
     } catch (error) {
         console.error('WebGPU initialization error:', error);
@@ -90,14 +106,13 @@ async function main(stats: Stats) {
 
 async function start() {
     try {
+        console.log('[WebGPU] Application starting...');
         // 再実行時のクリーンアップ
         cleanup();
         
         // DOM準備完了を待つ
         await waitForDOM();
-        
-        const stats = await preloadStats();
-        await main(stats);
+        await main();
     } catch (error) {
         console.error('Application start error:', error);
     }
