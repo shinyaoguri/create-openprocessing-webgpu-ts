@@ -1,7 +1,6 @@
 import { initWebGPU } from './core/webgpu/device';
 import { setupCanvas, resizeCanvas } from './core/utils/canvas';
 import { BasicScene } from './scenes/basic-scene';
-import { testES2024Features, testGroupBy } from './utils/es2024-test';
 
 // openprocessing.org対応：再実行時のクリーンアップ
 function cleanup() {
@@ -40,13 +39,7 @@ function waitForDOM(): Promise<void> {
 async function main() {
     try {
         console.log('[WebGPU] Starting main function...');
-        
-        // ES2024機能のテスト
-        console.log('[ES2024] Testing ES2024 features...');
-        await testES2024Features();
-        testGroupBy();
-        console.log('[ES2024] ES2024 features test completed');
-        
+                
         if (!navigator.gpu) {
             console.warn("WebGPU is not supported in this browser.");
             return;
